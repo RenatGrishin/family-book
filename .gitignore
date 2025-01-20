@@ -1,0 +1,11 @@
+# DATABASE
+/database/*
+!/database/.gitignore
+
+
+# BACKEND
+# dependencies
+/backend/node_modules
+/backend/.pnp
+/backend/.pnp.*
+/backend/.yarn/*
