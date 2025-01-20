@@ -19,7 +19,20 @@ services:
         volumes:
             - ./backend:/app
             - /app/node_modules
+            - ./database:/app/database
         ports:
             - "4000:4000"
         environment:
             NODE_ENV: development
+
+    database:
+        image: postgres:latest
+        container_name: postgres_db
+        environment:
+            POSTGRES_USER: myuser
+            POSTGRES_PASSWORD: mypassword
+            POSTGRES_DB: mydatabase
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./database:/var/lib/postgresql/data
