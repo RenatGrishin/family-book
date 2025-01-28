@@ -14,6 +14,7 @@ const app = express();
 const port = 4000;
 
 app.use(cors()); // Разрешаем все источники для простоты
+app.use(express.json()); // Для парсинга JSON-тела запроса
 
 // Создаем пул подключений к базе данных
 const pool = new Pool({
@@ -22,6 +23,18 @@ const pool = new Pool({
 	database: "mydatabase",
 	password: "mypassword",
 	port: 5432,
+});
+
+app.post("/v1/send-query", async (req: Request, res: Response) => {
+	const { query } = req.body;
+
+	try {
+		const result = await pool.query(query);
+		res.json(result.rows);
+	} catch (error) {
+		console.error("Error executing query", error);
+		res.status(500).json({ error: "Failed to execute query" });
+	}
 });
 
 app.get("/sql/get", async (req: Request, res: Response) => {

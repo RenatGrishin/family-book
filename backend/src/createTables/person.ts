@@ -4,7 +4,7 @@ export const createPersonTable = async (pool: Pool) => {
 	const query = `
         CREATE TABLE person (
             id SERIAL PRIMARY KEY,
-            gender VARCHAR(50) NOT NULL CHECK (gender IN ('male', 'female', 'unknown')),
+            gender VARCHAR(50) CHECK (gender IN ('male', 'female') OR gender IS NULL),
             first_name VARCHAR(255) NOT NULL,
             last_name VARCHAR(255) NOT NULL,
             birth_name VARCHAR(255),

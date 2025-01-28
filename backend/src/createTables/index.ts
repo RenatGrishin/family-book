@@ -35,8 +35,8 @@ export const getTables = async (pool: Pool) => {
 	}
 };
 
-export const deleteTablet = async (pool: Pool, table: string) => {
-	const query = `DROP TABLE IF EXISTS ${table};`;
+export const deleteTablet = async (pool: Pool) => {
+	const query = `DROP TABLE IF EXISTS person;`;
 
 	try {
 		const result = await pool.query(query);
