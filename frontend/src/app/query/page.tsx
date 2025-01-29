@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Flex, Button, TextArea } from "@radix-ui/themes";
 
 export default function PageSendQuery() {
 	const [text, setText] = useState("");
@@ -32,17 +33,9 @@ export default function PageSendQuery() {
 		}
 	};
 	return (
-		<div>
-			<div>
-				<textarea
-					value={text}
-					onChange={handleChange}
-					rows={4}
-					cols={100}
-				></textarea>
-			</div>
-
-			<button onClick={handleSubmit}>Отправить данные</button>
-		</div>
+		<Flex direction="column" gap="2">
+			<TextArea onChange={handleChange}></TextArea>
+			<Button onClick={handleSubmit}>Send</Button>
+		</Flex>
 	);
 }
