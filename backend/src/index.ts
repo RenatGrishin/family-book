@@ -2,13 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors"; // Для разрешения запросов с фронтенда
 import { Pool } from "pg"; // Подключаем библиотеку pg
 
-import {
-	createTablesDateSettings,
-	createTablePerson,
-	getTables,
-	checkTables,
-	deleteTablet,
-} from "./createTables/index";
+import { getTables, checkTables, deleteTablet } from "./createTables/index";
 
 const app = express();
 const port = 4000;
