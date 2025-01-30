@@ -10,6 +10,7 @@ export default function PageSendQuery() {
 	};
 
 	const handleSubmit = async () => {
+		console.log(text);
 		try {
 			const response = await fetch(
 				"http://localhost:4000/v1/send-query",

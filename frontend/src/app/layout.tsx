@@ -4,6 +4,7 @@ import { Theme } from "@radix-ui/themes";
 
 import "@radix-ui/themes/styles.css";
 import "./globals.css";
+import { Header } from "@/modules/Header/Header";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -28,7 +29,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable}`}>
-				<Theme>{children}</Theme>
+				<Theme>
+					<Header />
+					<main>{children}</main>
+					<footer></footer>
+				</Theme>
 			</body>
 		</html>
 	);

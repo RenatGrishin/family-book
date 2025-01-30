@@ -3,6 +3,7 @@ import { createDateSettingsTable } from "./data_setting";
 import { createPersonTable } from "./person";
 import { createFamilyTable } from "./family";
 import { createMarriageTable } from "./marriage";
+import { editPersonTable, TEditPersonTable } from "./person";
 
 export const createTablesDateSettings = async (pool: Pool) => {
 	createDateSettingsTable(pool);
@@ -17,6 +18,13 @@ export const createTableFamily = async (pool: Pool) => {
 
 export const createTableMarriage = async (pool: Pool) => {
 	createMarriageTable(pool);
+};
+
+export const editTablePerson = async (
+	poll: Pool,
+	setInfo: TEditPersonTable
+) => {
+	editPersonTable(poll, setInfo);
 };
 
 export const getTables = async (pool: Pool) => {

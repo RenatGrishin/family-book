@@ -14,12 +14,42 @@ export default function PageBook() {
 	const [gender, setGender] = useState<"" | "male" | "female">("");
 	const [firstName, setFirstName] = useState<string>("");
 	const [lastName, setLastName] = useState<string>("");
-	const [birthName, setBirthtName] = useState<string>("");
+	const [birthName, setBirthName] = useState<string>("");
 	const [maidenName, setMaidenName] = useState<string>("");
+	const [personData, setPersonData] = useState({
+		gender: "male",
+		first_name: "Renat",
+		last_name: "Grishin",
+		birth_name: "",
+		maiden_name: "",
+		birth_date_id: "",
+		birthplace: "",
+		death_status: false,
+		death_date_id: "",
+		death_place: "",
+		cause_of_death: "",
+		burial_place: "",
+	});
 
-	useEffect(() => {
-		console.log(gender);
-	}, [gender]);
+	const handleSubmit = async () => {
+		fetch("http://localhost:4000/send/person", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(personData),
+		})
+			.then((response) => {
+				if (response.ok) {
+					console.log("Данные успешно отправлены");
+				} else {
+					console.error("Ошибка при отправке данных");
+				}
+			})
+			.catch((error) =>
+				console.error("Ошибка при отправке запроса:", error)
+			);
+	};
 
 	return (
 		<Box maxWidth={"400px"}>
@@ -44,30 +74,38 @@ export default function PageBook() {
 						onChange={(e) => {
 							setFirstName(e.target.value);
 						}}
-					></TextField.Root>
+					>
+						{firstName}
+					</TextField.Root>
 					<Text as="div">Фамилия</Text>
 					<TextField.Root
 						size={"2"}
 						onChange={(e) => {
 							setLastName(e.target.value);
 						}}
-					></TextField.Root>
+					>
+						{lastName}
+					</TextField.Root>
 				</Box>
 				<Box>
 					<Text as="div">Родное имя</Text>
 					<TextField.Root
 						size={"2"}
 						onChange={(e) => {
-							setBirthtName(e.target.value);
+							setBirthName(e.target.value);
 						}}
-					></TextField.Root>
+					>
+						{birthName}
+					</TextField.Root>
 					<Text as="div">Родная фамилия</Text>
 					<TextField.Root
 						size={"2"}
 						onChange={(e) => {
 							setMaidenName(e.target.value);
 						}}
-					></TextField.Root>
+					>
+						{maidenName}
+					</TextField.Root>
 				</Box>
 				<Box>
 					<Text as="div">Дата рождения</Text>
@@ -107,7 +145,7 @@ export default function PageBook() {
 					<Text as="div">Место захоронения</Text>
 					<TextField.Root size={"2"}></TextField.Root>
 				</Box>
-				<Button>Отправить</Button>
+				<Button onClick={handleSubmit}>Отправить</Button>
 			</Card>
 		</Box>
 	);
