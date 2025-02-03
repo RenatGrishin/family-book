@@ -3,7 +3,7 @@ import { makeAutoObservable } from "mobx";
 export type TNavHeaderStore = "home" | "events" | "persons" | "tree";
 
 class HeaderStore {
-	navState = "" as TNavHeaderStore;
+	navState = "home" as TNavHeaderStore;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -13,9 +13,9 @@ class HeaderStore {
 		return this.navState;
 	}
 
-	toggleNav(val: TNavHeaderStore): void {
+	toggleNav = (val: TNavHeaderStore): void => {
 		this.navState = val;
-	}
+	};
 }
-
-export default new HeaderStore();
+const headerStore = new HeaderStore();
+export default headerStore;

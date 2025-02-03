@@ -1,0 +1,7 @@
+.head {
+	display: flex;
+}
+
+.name {
+	margin-inline-start: 8px;
+}
