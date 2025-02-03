@@ -1,10 +1,5 @@
 "use client";
 
 export default function Home() {
-	return (
-		<div>
-			<main>1</main>
-			<footer></footer>
-		</div>
-	);
+	return <div>123</div>;
 }

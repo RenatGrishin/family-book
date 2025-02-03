@@ -2,7 +2,12 @@ import express, { Request, Response } from "express";
 import cors from "cors"; // Для разрешения запросов с фронтенда
 import { Pool } from "pg"; // Подключаем библиотеку pg
 
-import { getTables, checkTables, deleteTablet } from "./createTables/index";
+import {
+	getTables,
+	checkTables,
+	deleteTablet,
+	editTablePerson,
+} from "./createTables/index";
 
 const app = express();
 const port = 4000;
@@ -28,6 +33,18 @@ app.post("/v1/send-query", async (req: Request, res: Response) => {
 	} catch (error) {
 		console.error("Error executing query", error);
 		res.status(500).json({ error: "Failed to execute query" });
+	}
+});
+
+app.post("/send/person", async (req: Request, res: Response) => {
+	const setInfo = req.body;
+
+	try {
+		await editTablePerson(pool, setInfo);
+		res.status(200).send("Данные успешно добавлены");
+	} catch (err) {
+		console.error("Ошибка при добавлении данных:", err);
+		res.status(500).send("Ошибка при добавлении данных");
 	}
 });
 
