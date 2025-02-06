@@ -2,8 +2,10 @@
 import { Avatar, Card, Heading, Text } from "@radix-ui/themes";
 import styles from "./styles.module.css";
 import { observer } from "mobx-react-lite";
+import Link from "next/link";
 
 type TPersonCard = {
+	id: number;
 	gender?: "male" | "female";
 	first_name: string;
 	last_name: string;
@@ -14,6 +16,7 @@ type TPersonCard = {
 
 export const PersonCard = observer(
 	({
+		id,
 		gender,
 		first_name,
 		last_name,
@@ -60,25 +63,27 @@ export const PersonCard = observer(
 
 		return (
 			<Card className={styles.card}>
-				<div className={styles.head}>
-					<Avatar
-						variant="soft"
-						size={"4"}
-						color={getColor()}
-						fallback={`${first_name[0] + last_name[0]}`}
-					/>
-					<div className={styles.name}>
-						<Heading size="3">
-							{first_name} {last_name}
-						</Heading>
-						{maiden_name && (
-							<Heading size="3" color="gray">
-								({maiden_name})
+				<Link href={`/persons/${id}`}>
+					<div className={styles.head}>
+						<Avatar
+							variant="soft"
+							size={"4"}
+							color={getColor()}
+							fallback={`${first_name[0] + last_name[0]}`}
+						/>
+						<div className={styles.name}>
+							<Heading size="3">
+								{first_name} {last_name}
 							</Heading>
-						)}
+							{maiden_name && (
+								<Heading size="3" color="gray">
+									({maiden_name})
+								</Heading>
+							)}
+						</div>
 					</div>
-				</div>
-				{getDate()}
+					{getDate()}
+				</Link>
 			</Card>
 		);
 	}

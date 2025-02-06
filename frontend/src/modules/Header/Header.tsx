@@ -1,49 +1,55 @@
 "use client";
-import headerStore, { TNavHeaderStore } from "@/stores/headerStore";
 import { TabNav } from "@radix-ui/themes";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const Header = observer(() => {
-	const { navState, toggleNav } = headerStore;
+	const [page, usePage] = useState<string>("home");
 	const router = useRouter();
+	const pathname = usePathname();
 
-	const handleNavigation = (path: string, state: TNavHeaderStore) => {
-		toggleNav(state);
-		router.push(path);
-	};
+	useEffect(() => {
+		const result = pathname?.split("/")[1] as string;
+
+		if (!!result) {
+			usePage("home");
+		}
+
+		usePage(result);
+	}, [pathname]);
 
 	return (
 		<header>
 			<TabNav.Root justify="center">
 				<TabNav.Link
-					active={navState === "home"}
+					active={page === "home"}
 					onClick={() => {
-						handleNavigation("/", "home");
+						router.push("/");
 					}}
 				>
 					Главная
 				</TabNav.Link>
 				<TabNav.Link
-					active={navState === "events"}
+					active={page === "events"}
 					onClick={() => {
-						handleNavigation("/events", "events");
+						router.push("/events");
 					}}
 				>
 					События
 				</TabNav.Link>
 				<TabNav.Link
-					active={navState === "persons"}
+					active={page === "persons"}
 					onClick={() => {
-						handleNavigation("/persons", "persons");
+						router.push("/persons");
 					}}
 				>
 					Люди
 				</TabNav.Link>
 				<TabNav.Link
-					active={navState === "tree"}
+					active={page === "tree"}
 					onClick={() => {
-						handleNavigation("/tree", "tree");
+						router.push("/tree");
 					}}
 				>
 					Древо
