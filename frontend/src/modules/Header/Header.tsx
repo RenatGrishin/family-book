@@ -10,12 +10,8 @@ export const Header = observer(() => {
 	const pathname = usePathname();
 
 	useEffect(() => {
-		const result = pathname?.split("/")[1] as string;
-
-		if (!!result) {
-			usePage("home");
-		}
-
+		let result = pathname?.split("/")[1] as string;
+		if (!!result === false) result = "home";
 		usePage(result);
 	}, [pathname]);
 
