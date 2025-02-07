@@ -58,6 +58,13 @@ class PersonsStore {
 				first_name: "Предок",
 				last_name: "Котов",
 			},
+			{
+				id: 6,
+				gender: "female",
+				first_name: "Алиса",
+				last_name: "Котова",
+				birth_date: "31.01.2023",
+			},
 		];
 	}
 }

@@ -1,3 +1,9 @@
+.connection {
+	display: block;
+	margin-top: -6px;
+	margin-bottom: 6px;
+}
+
 .head {
 	display: flex;
 }

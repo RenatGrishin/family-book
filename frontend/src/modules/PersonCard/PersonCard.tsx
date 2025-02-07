@@ -2,25 +2,20 @@
 import { Avatar, Card, Heading, Text } from "@radix-ui/themes";
 import styles from "./styles.module.css";
 import { observer } from "mobx-react-lite";
-
-type TPersonCard = {
-	gender?: "male" | "female";
-	first_name: string;
-	last_name: string;
-	maiden_name?: string;
-	birth_date?: string;
-	death_date?: string;
-};
+import Link from "next/link";
+import { IPersonMainInfo } from "@/types/main";
 
 export const PersonCard = observer(
 	({
+		id,
+		connection,
 		gender,
 		first_name,
 		last_name,
 		maiden_name,
 		birth_date,
 		death_date,
-	}: TPersonCard) => {
+	}: IPersonMainInfo) => {
 		const getColor = () => {
 			switch (gender) {
 				case "male":
@@ -60,25 +55,36 @@ export const PersonCard = observer(
 
 		return (
 			<Card className={styles.card}>
-				<div className={styles.head}>
-					<Avatar
-						variant="soft"
-						size={"4"}
-						color={getColor()}
-						fallback={`${first_name[0] + last_name[0]}`}
-					/>
-					<div className={styles.name}>
-						<Heading size="3">
-							{first_name} {last_name}
-						</Heading>
-						{maiden_name && (
-							<Heading size="3" color="gray">
-								({maiden_name})
+				<Link href={`/persons/${id}`}>
+					{connection && (
+						<Text
+							size={"1"}
+							color="gray"
+							className={styles.connection}
+						>
+							{connection}
+						</Text>
+					)}
+					<div className={styles.head}>
+						<Avatar
+							variant="soft"
+							size={"4"}
+							color={getColor()}
+							fallback={`${first_name[0] + last_name[0]}`}
+						/>
+						<div className={styles.name}>
+							<Heading size="3">
+								{first_name} {last_name}
 							</Heading>
-						)}
+							{maiden_name && (
+								<Heading size="3" color="gray">
+									({maiden_name})
+								</Heading>
+							)}
+						</div>
 					</div>
-				</div>
-				{getDate()}
+					{getDate()}
+				</Link>
 			</Card>
 		);
 	}
