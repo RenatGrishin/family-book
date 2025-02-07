@@ -4,6 +4,7 @@ export type TKinship = "biological" | "adopted" | "foster";
 
 export interface IPersonMainInfo {
 	id: number;
+	connection?: string;
 	gender?: TGender;
 	avatar?: string;
 	first_name: string;

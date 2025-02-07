@@ -3,27 +3,19 @@ import { Avatar, Card, Heading, Text } from "@radix-ui/themes";
 import styles from "./styles.module.css";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-
-type TPersonCard = {
-	id: number;
-	gender?: "male" | "female";
-	first_name: string;
-	last_name: string;
-	maiden_name?: string;
-	birth_date?: string;
-	death_date?: string;
-};
+import { IPersonMainInfo } from "@/types/main";
 
 export const PersonCard = observer(
 	({
 		id,
+		connection,
 		gender,
 		first_name,
 		last_name,
 		maiden_name,
 		birth_date,
 		death_date,
-	}: TPersonCard) => {
+	}: IPersonMainInfo) => {
 		const getColor = () => {
 			switch (gender) {
 				case "male":
@@ -64,6 +56,15 @@ export const PersonCard = observer(
 		return (
 			<Card className={styles.card}>
 				<Link href={`/persons/${id}`}>
+					{connection && (
+						<Text
+							size={"1"}
+							color="gray"
+							className={styles.connection}
+						>
+							{connection}
+						</Text>
+					)}
 					<div className={styles.head}>
 						<Avatar
 							variant="soft"

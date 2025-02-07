@@ -1,7 +1,7 @@
 import { IPersonMainInfo } from "@/types/main";
 import { makeAutoObservable } from "mobx";
 
-interface TParent extends IPersonMainInfo {
+export interface IPersonInfo extends IPersonMainInfo {
 	mother?: IPersonMainInfo;
 	father?: IPersonMainInfo;
 }
@@ -28,7 +28,7 @@ class PersonStore {
 			last_name: "Котов",
 			birth_date: "01.02.2021",
 		},
-	} as TParent;
+	} as IPersonInfo;
 
 	constructor() {
 		makeAutoObservable(this);

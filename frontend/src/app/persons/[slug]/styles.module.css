@@ -1,0 +1,9 @@
+.head {
+	display: flex;
+	gap: 18;
+}
+
+.name {
+	display: flex;
+	flex-direction: column;
+}
