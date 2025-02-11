@@ -1,7 +1,6 @@
 import { Pool } from "pg";
 
 export async function crateTableDateSettings(pool: Pool) {
-	const client = await pool.connect();
 	const query = `
         CREATE TABLE date_settings (
             id SERIAL PRIMARY KEY,
@@ -11,6 +10,10 @@ export async function crateTableDateSettings(pool: Pool) {
         );
     `;
 
-	await client.query(query);
-	client.release();
+	try {
+		const result = await pool.query(query);
+		return result;
+	} catch (error) {
+		console.log("Ошибка при создании таблицы date_settings: " + error);
+	}
 }

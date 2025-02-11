@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors"; // Для разрешения запросов с фронтенда
 import { Pool } from "pg"; // Подключаем библиотеку pg
 
-//import { crateTableDateSettings } from "./tablets/date_settings";
+import { crateTableDateSettings } from "./data_settings/index";
 
 const app = express();
 const port = 4000;
@@ -19,39 +19,38 @@ const pool = new Pool({
 	port: 5432,
 });
 
-// // Маршрут для создания таблицы person
-// app.post("/create-person-table", async (req: Request, res: Response) => {
-// 	try {
-// 		crateTableDateSettings(pool);
+// Маршрут для создания таблицы person
+app.post("/create-person-table", async (req: Request, res: Response) => {
+	const query = `
+        CREATE TABLE date_settings (
+            id SERIAL PRIMARY KEY,
+            date_type VARCHAR(50) NOT NULL CHECK (date_type IN ('exact', 'approximate', 'before', 'after', 'between')),
+            start_date DATE NOT NULL,
+            end_date DATE
+        );
+    `;
 
-// 		res.status(200).send("Таблица person успешно создана!");
-// 	} catch (err) {
-// 		console.error("Ошибка при создании таблицы:", err);
-// 		res.status(500).send("Ошибка при создании таблицы");
-// 	}
-// });
+	try {
+		await pool.query(query);
+	} catch (error) {
+		console.log("Ошибка при создании таблицы date_settings: " + error);
+	}
+});
 
-// // Маршрут для получения всех таблиц
-// app.get("/tables", async (req: Request, res: Response) => {
-// 	try {
-// 		const client = await pool.connect();
+// Маршрут для получения всех таблиц
+app.get("/version", async (req: Request, res: Response) => {
+	try {
+		const query = `SELECT version();`;
+		const result = await pool.query(query);
 
-// 		// Запрос для получения всех таблиц
-// 		const result = await client.query(`
-// 		SELECT tablename
-// 		FROM pg_tables
-// 		WHERE schemaname = 'public';
-// 	  `);
-
-// 		client.release();
-
-// 		// Отправляем результат клиенту
-// 		res.status(200).json(result.rows);
-// 	} catch (err) {
-// 		console.error("Ошибка при получении таблиц:", err);
-// 		res.status(500).send("Ошибка при получении таблиц");
-// 	}
-// });
+		res.json(result.rows[0]); // Отправляем результат клиенту
+	} catch (err) {
+		console.error("Ошибка при получении версии PostgreSQL:", err);
+		res.status(500).json({
+			error: "Ошибка при получении версии PostgreSQL",
+		});
+	}
+});
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello from Express backend!!!");
