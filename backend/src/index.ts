@@ -2,8 +2,6 @@ import express, { Request, Response } from "express";
 import cors from "cors"; // Для разрешения запросов с фронтенда
 import { Pool } from "pg"; // Подключаем библиотеку pg
 
-import { crateTableDateSettings } from "./data_settings/index";
-
 const app = express();
 const port = 4000;
 
@@ -19,36 +17,69 @@ const pool = new Pool({
 	port: 5432,
 });
 
-// Маршрут для создания таблицы person
-app.post("/create-person-table", async (req: Request, res: Response) => {
-	const query = `
-        CREATE TABLE date_settings (
-            id SERIAL PRIMARY KEY,
-            date_type VARCHAR(50) NOT NULL CHECK (date_type IN ('exact', 'approximate', 'before', 'after', 'between')),
-            start_date DATE NOT NULL,
-            end_date DATE
-        );
-    `;
-
+// Маршрут для создания таблицы date_settings
+app.get("/create-table", async (req: Request, res: Response) => {
 	try {
+		// SQL-запрос для создания таблицы
+		const query = `
+			CREATE TABLE date_settings (
+			id SERIAL PRIMARY KEY,
+			date_type VARCHAR(50) NOT NULL CHECK (date_type IN ('exact', 'approximate', 'before', 'after', 'between')),
+			start_date DATE NOT NULL,
+			end_date DATE
+			);
+	  	`;
+
+		// Выполняем запрос
 		await pool.query(query);
-	} catch (error) {
-		console.log("Ошибка при создании таблицы date_settings: " + error);
+
+		// Отправляем успешный ответ
+		res.status(201).json({
+			message: "Таблица date_settings успешно создана",
+		});
+	} catch (err) {
+		console.error("Ошибка при создании таблицы:", err);
+		res.status(500).json({ error: "Ошибка при создании таблицы" });
 	}
 });
 
-// Маршрут для получения всех таблиц
-app.get("/version", async (req: Request, res: Response) => {
+// Маршрут для удаления таблицы
+app.get("/drop-table", async (req: Request, res: Response) => {
 	try {
-		const query = `SELECT version();`;
+		// SQL-запрос для удаления таблицы
+		const query = `DROP TABLE IF EXISTS date_settings;`;
+
+		// Выполняем запрос
+		await pool.query(query);
+
+		// Отправляем успешный ответ
+		res.status(200).json({
+			message: `Таблица date_settings успешно удалена`,
+		});
+	} catch (err) {
+		console.error("Ошибка при удалении таблицы:", err);
+		res.status(500).json({ error: "Ошибка при удалении таблицы" });
+	}
+});
+
+// Маршрут для получения списка таблиц
+app.get("/tables", async (req: Request, res: Response) => {
+	try {
+		// Выполняем SQL-запрос к information_schema.tables
+		const query = `
+		SELECT table_name
+		FROM information_schema.tables
+		WHERE table_schema = 'public'
+		ORDER BY table_name;
+	  `;
+
 		const result = await pool.query(query);
 
-		res.json(result.rows[0]); // Отправляем результат клиенту
+		// Отправляем результат клиенту
+		res.json(result.rows);
 	} catch (err) {
-		console.error("Ошибка при получении версии PostgreSQL:", err);
-		res.status(500).json({
-			error: "Ошибка при получении версии PostgreSQL",
-		});
+		console.error("Ошибка при получении списка таблиц:", err);
+		res.status(500).json({ error: "Ошибка при получении списка таблиц" });
 	}
 });
 
