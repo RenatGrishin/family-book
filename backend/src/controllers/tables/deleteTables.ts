@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { pool } from "../../db/pool";
+import { dropAllTablesSecvices } from "../../services/tables/tablesService";
 
-export const deleteTablet = async (req: Request, res: Response) => {
+export const deleteTable = async (req: Request, res: Response) => {
 	try {
-		const query = `DROP TABLE IF EXISTS date_settings;`;
+		dropAllTablesSecvices();
 
-		pool.query(query);
 		res.status(200).json({
 			message: `Таблица date_settings успешно удалена`,
 		});
