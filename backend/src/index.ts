@@ -3,6 +3,7 @@ import cors from "cors"; // Для разрешения запросов с фр
 
 import tables from "./routes/tables";
 import createDataSetings from "./routes/dateSettings";
+import person from "./routes/person";
 
 const app = express();
 const port = 4000;
@@ -12,6 +13,7 @@ app.use(express.json()); // Для парсинга JSON-тела запроса
 
 app.use("/tables", tables);
 app.use("/create-data", createDataSetings);
+app.use("/person", person);
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello from Express backend!!!");
