@@ -4,4 +4,5 @@ COPY package.json .
 RUN npm install
 COPY . .
 EXPOSE 4000
-CMD ["npx", "ts-node", "src/index.ts"]
+RUN npm --version
+CMD npm run dev
